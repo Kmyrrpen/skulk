@@ -1,0 +1,2 @@
+# skulk
+A small set of type-safe utility functions to create a flux-like implementation for your applications. Separate logic from the UI by passing actions to `dispatch()` whilst your flows handle all the logical stuff, **skulk isn't a state management solution**, but works in conjunction with them.
