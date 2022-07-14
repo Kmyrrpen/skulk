@@ -9,7 +9,7 @@ import { Flow } from "./createChain";
 */
 export const emptyNext = () => {};
 
-export type Dispatch = (action: Action<unknown>) => void;
+export type Dispatch = (action: Action<any>) => void;
 export function createDispatch(...flows: Flow[]): Dispatch;
 export function createDispatch(...flows: Flow[]) {
   return function dispatch(action: Action<any>) {

@@ -13,13 +13,14 @@ export function createChain(...flows: Flow[]) {
 
   function createRootFlow(dispatch: Dispatch) {
     let rootFlow: Next = emptyNext;
+    let tempArr: Next[] = [emptyNext];
 
     for (let i = flows.length - 1; i >= 0; i--) {
-      const temp = rootFlow;
-      rootFlow = (action) => flows[i](action, dispatch, temp);
+      rootFlow = (action) => flows[i](action, dispatch, tempArr[flows.length - 1 - i]);
+      tempArr.push(rootFlow);
     }
 
-    return rootFlow;
+    return rootFlow as Next;
   }
 
   return function chainDispatch(action: Action<any>, dispatch?: Dispatch) {
@@ -31,6 +32,6 @@ export function createChain(...flows: Flow[]) {
       memoizedRootFlow = createRootFlow(dispatch);
     }
 
-    memoizedRootFlow(action);
+    return memoizedRootFlow(action);
   };
 }
