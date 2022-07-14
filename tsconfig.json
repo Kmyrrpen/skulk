@@ -3,9 +3,11 @@
     "target": "ES5",
     "allowJs": false,
     "strict": true,
+    "alwaysStrict": true,
     "baseUrl": ".",
     "outDir": "./dist",
     "sourceMap": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "noImplicitAny": true
   }
 }

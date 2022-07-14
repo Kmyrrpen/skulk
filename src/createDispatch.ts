@@ -1,20 +1,20 @@
 import { Action } from "./createAction";
 import { Flow } from "./createChain";
 
-// to not create a lot of these, all next() calls that aren't
-// in chains will point to emptyNext
-const emptyNext = () => {};
+/* 
+  to not create a lot of these, all next() calls that aren't
+  in chains will point to emptyNext(). 
+  this is so that users can use the same flow in both dispatch and chains
+  without changing their functions, throwing an error is meh
+*/
+export const emptyNext = () => {};
 
 export type Dispatch = (action: Action<unknown>) => void;
 export function createDispatch(...flows: Flow[]): Dispatch;
 export function createDispatch(...flows: Flow[]) {
   return function dispatch(action: Action<any>) {
     flows.forEach((flow) => {
-      if (flow.arguments === 3) {
-        flow(action, dispatch, emptyNext);
-      } else {
-        flow(action, dispatch);
-      }
+      flow(action, dispatch, emptyNext);
     });
   };
 }

@@ -1,15 +1,17 @@
 {
   "name": "skulk",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@types/jest": "^28.1.5",
     "jest": "^28.1.2",
     "ts-jest": "^28.0.5",
     "typescript": "^4.7.4",
