@@ -6,8 +6,10 @@
     "alwaysStrict": true,
     "baseUrl": ".",
     "outDir": "./dist",
-    "sourceMap": true,
+    "declaration": true,
     "moduleResolution": "node",
     "noImplicitAny": true
-  }
+  },
+  "include": ["src"],
+  "exclude": ["**/*.test.ts"]
 }
