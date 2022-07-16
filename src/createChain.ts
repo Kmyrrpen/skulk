@@ -1,13 +1,12 @@
 import { Action } from "./createAction";
 
-export const end = (action: Action) => action;
-export type Dispatch = (action: Action<any>) => void;
 export type Next = (action: Action<any>) => any;
-export type Flow = (action: Action<any>, dispatch: Dispatch, next: Next) => any;
+export type Flow = (action: Action<any>, dispatch: Next, next: Next) => any;
+export const end: Next = (action) => action;
 
 export function createChain(...flows: Flow[]) {
   let memoizedRootFlow: Next;
-  function createRootFlow(dispatch: Dispatch, next: Next = end) {
+  function createRootFlow(dispatch: Next, next: Next = end) {
     let rootFlow: Next = next;
     for (let i = flows.length - 1; i >= 0; i--) {
       const temp = rootFlow;
@@ -18,7 +17,7 @@ export function createChain(...flows: Flow[]) {
 
   return function chainDispatch(
     action: Action<any>,
-    dispatch?: Dispatch,
+    dispatch?: Next,
     next?: Next
   ) {
     if (!memoizedRootFlow) {
