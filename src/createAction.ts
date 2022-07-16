@@ -1,4 +1,5 @@
 // this is basically just a simplified version of React Toolkit's createAction function
+// https://github.com/reduxjs/redux-toolkit/blob/master/packages/toolkit/src/createAction.ts
 export type Action<P = void> = {
   type: string;
   payload: P;
