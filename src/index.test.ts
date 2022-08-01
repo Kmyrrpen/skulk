@@ -208,13 +208,15 @@ describe('createSculk', () => {
     const chain2 = createChain(flow3, sculk3, sculk2);
 
     const dispatch = createChain(chain1, chain2);
-    const reverseDispatch = createChain(chain2, chain1);
+    const reverseDispatch = createChain(flow3, sculk3, sculk2, sculk1, flow1, flow2);
     dispatch(sculk1());
     expect(order).toBe("sculk1.1.2.3.");
 
     order = "";
     dispatch(sculk2());
     expect(order).toBe("1.2.3.sculk2.");
+
+    console.log("reversed!");
 
     order = "";
     reverseDispatch(sculk3());
