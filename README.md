@@ -31,9 +31,14 @@ const dispatch = createChain(chain2, flow5);
 // order --> flow1 flow2 flow3 flow4 flow5
 ```
 
-Note that you should **NOT** call a chain if it's going to be passed again to another chain
+Note that you must not re-use chains or call them before passing them into `createChain`! This is because memoization happens under the hood on the first call, which then locks them from being reused.
 
 ```ts
+// depending on which dispatch gets called first, chain1 will always point next to either chain2 or chain3 no matter which dispatch function you will use.
+const dispatch = createChain(chain1, chain2);
+const anotherDispatch = createChain(chain1, chain3);
+
+
 const chain1 = createChain(flow1, flow2);
 chain1({
   /*...*/
