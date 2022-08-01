@@ -12,7 +12,7 @@ export function isSculk(flow: any): flow is Sculk {
 export function createSculk<P = void>(type: string, flow: Flow<P>): Sculk<P>;
 export function createSculk(type: string, flow: Flow): any {
   const actionCreator = createAction(type);
-  //@ts-ignore
+  // @ts-ignore
   // might be a better way to do this, but ignoring is good for now.
   actionCreator._flow = flow;
   return actionCreator;
