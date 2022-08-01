@@ -1,5 +1,6 @@
 import { createAction } from './createAction';
 import { Flow, createChain } from './createChain';
+import { createSculk, Sculk } from './createSculk';
 
 const type = 'string';
 const type2 = 'number';
@@ -119,4 +120,104 @@ describe('createChain', () => {
     masterChain(action1);
     expect(order).toBe('2.1.1.2.3.');
   });
+});
+
+describe('createSculk', () => {
+  test('sculk creates actions and works in a chain', () => {
+    let something = '';
+    const setSomething = createSculk<string>('something', (action, next) => {
+      something = action.payload;
+      next(action);
+    });
+
+    const dispatch = createChain(setSomething);
+    dispatch(setSomething('was set'));
+    expect(something).toBe('was set');
+  });
+
+  test('sculks mixed with flows in chains', () => {
+    let order = "";
+    const flow1: Flow = (action, next, dispatch) => {
+      order += '1.';
+      next(action);
+    };
+    const flow2: Flow = (action, next, dispatch) => {
+      order += '2.';
+      next(action);
+    };
+    const flow3: Flow = (action, next, dispatch) => {
+      order += '3.';
+      next(action);
+    };
+    
+    const sculk1 = createSculk("sculk1", (action, next) => {
+      order += "sculk1.";
+      next(action);
+    });
+    const sculk2 = createSculk("sculk2", (action, next) => {
+      order += "sculk2.";
+      next(action);
+    });
+    const sculk3 = createSculk("sculk3", (action, next) => {
+      order += "sculk3.";
+      next(action);
+    });
+
+    let dispatch = createChain(flow1, sculk1, sculk2, flow2, flow3, sculk3);
+    dispatch(sculk1());
+    expect(order).toBe("1.sculk1.2.3.");
+
+    order = "";
+    dispatch(sculk2());
+    expect(order).toBe("1.sculk2.2.3.");
+
+    order = "";
+    dispatch(sculk3());
+    expect(order).toBe("1.2.3.sculk3.")
+  })
+
+  test("sculk in chains in chains", () => {
+    let order = "";
+    const flow1: Flow = (action, next, dispatch) => {
+      order += '1.';
+      next(action);
+    };
+    const flow2: Flow = (action, next, dispatch) => {
+      order += '2.';
+      next(action);
+    };
+    const flow3: Flow = (action, next, dispatch) => {
+      order += '3.';
+      next(action);
+    };
+    
+    const sculk1 = createSculk("sculk1", (action, next) => {
+      order += "sculk1.";
+      next(action);
+    });
+    const sculk2 = createSculk("sculk2", (action, next) => {
+      order += "sculk2.";
+      next(action);
+    });
+    const sculk3 = createSculk("sculk3", (action, next) => {
+      order += "sculk3.";
+      next(action);
+    });
+
+    const chain1 = createChain(sculk1, flow1, flow2);
+    const chain2 = createChain(flow3, sculk3, sculk2);
+
+    const dispatch = createChain(chain1, chain2);
+    const reverseDispatch = createChain(chain2, chain1);
+    dispatch(sculk1());
+    expect(order).toBe("sculk1.1.2.3.");
+
+    order = "";
+    dispatch(sculk2());
+    expect(order).toBe("1.2.3.sculk2.");
+
+    order = "";
+    reverseDispatch(sculk3());
+    expect(order).toBe("3.sculk3.1.2.");
+  })
 });

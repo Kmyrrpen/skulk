@@ -20,7 +20,10 @@ interface CreatorEmptyPayload<P> extends BaseActionCreator<P> {
   (): Action<P>;
 }
 
-export type ActionCreator<P> = [void] extends [P]
+// note: order is important :p
+export type ActionCreator<P> = true | false extends (P extends never ? true : false)
+  ? CreatorPayload<any> // payload can be anything
+  : [void] extends [P]
   ? CreatorEmptyPayload<P> // payload is void
   : [undefined] extends [P]
   ? CreatorOptionalPayload<P> // payload can be undefined

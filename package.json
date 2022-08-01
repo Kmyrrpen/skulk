@@ -3,7 +3,7 @@
   "author": "Nashe Omirro",
   "description": "A small set of utility functions for creating an action-based pattern",
   "keywords": ["action", "flux", "bigpp"],
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": ["dist/**/*"],
