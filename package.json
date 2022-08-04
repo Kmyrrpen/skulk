@@ -3,7 +3,7 @@
   "author": "Nashe Omirro",
   "description": "A small set of utility functions for creating an action-based pattern",
   "keywords": ["action", "flux", "bigpp"],
-  "version": "1.1.0",
+  "version": "1.1.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": ["dist/**/*"],
@@ -16,7 +16,7 @@
     "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run lint",
     "preversion": "npm run lint",
-    "version": "npm run format && git add -A src",
+    "version": "npm run format",
     "postversion": "git push && git push --tags"
   },
   "repository": {
